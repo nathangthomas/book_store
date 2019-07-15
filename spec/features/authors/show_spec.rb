@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'books index page' do
+RSpec.describe 'authors show page' do
   describe 'as a visitor' do
     before(:each) do
       @tom = Author.create!(name: "Tom")
@@ -19,14 +19,19 @@ RSpec.describe 'books index page' do
       visit '/books'
     end
 
-    it 'I can see each book including title, number of pages, publication year, and name of author/s that wrote the book.' do
-      within "#book-#{@book_1.id}" do
-        expect(page).to have_content("Title: #{@book_1.title}")
-        expect(page).to have_content("Number of Pages: #{@book_1.num_of_pages}")
-        expect(page).to have_content("Publication Year: #{@book_1.publication_year}")
-        expect(page).to have_content("Authors:")
-        expect(page).to have_content(@tom.name)
-        expect(page).to have_content(@wile.name)
+    describe 'displays all author names as links' do
+      it "takes me to an Author Show Page where I see the author's name, title of each book, and average number of pages for all of their books" do
+
+        expect(page).to have_link(@tom.name)
+        visit author_path(@tom.id)
+        expect(current_path).to eq(author_path(@tom.id))
+
+        expect(page).to have_content("Author: #{@tom.name}")
+        expect(page).to have_content("Books by #{@tom.name}:")
+        expect(page.all('li')[0]).to have_content(@book_1.title)
+        expect(page.all('li')[1]).to have_content(@book_3.title)
+
+        expect(page).to have_content("Average Number of Pages: 75")
       end
     end
   end
