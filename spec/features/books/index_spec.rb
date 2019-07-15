@@ -25,8 +25,8 @@ RSpec.describe 'books index page' do
         expect(page).to have_content("Number of Pages: #{@book_1.num_of_pages}")
         expect(page).to have_content("Publication Year: #{@book_1.publication_year}")
         expect(page).to have_content("Authors:")
-        expect(page.all('li')[0]).to have_content(@tom.name)
-        expect(page.all('li')[1]).to have_content(@wile.name)
+        expect(page).to have_content(@tom.name)
+        expect(page).to have_content(@wile.name)
       end
     end
   end
